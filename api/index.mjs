@@ -56127,7 +56127,12 @@ if (!process.env.DATABASE_URL) {
     "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
-var pool = new Pool3({ connectionString: process.env.DATABASE_URL });
+var connectionString = process.env.DATABASE_URL;
+var needsExplicitSsl = !/[?&]sslmode=/.test(connectionString) && (/\.neon\.tech/.test(connectionString) || /\.supabase\.co/.test(connectionString) || /\.render\.com/.test(connectionString));
+var pool = new Pool3({
+  connectionString,
+  ...needsExplicitSsl ? { ssl: { rejectUnauthorized: false } } : {}
+});
 var db = drizzle(pool, { schema: schema_exports });
 
 // ../../node_modules/.pnpm/jose@6.2.3/node_modules/jose/dist/webapi/lib/buffer_utils.js
