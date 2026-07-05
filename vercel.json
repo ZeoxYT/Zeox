@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index.mjs" },
+    { "source": "/files/:path*", "destination": "/api/index.mjs" },
+    { "source": "/((?!assets/|favicon|icon.png|apple-touch-icon.png|robots.txt|opengraph.jpg).*)", "destination": "/index.html" }
+  ]
+}
